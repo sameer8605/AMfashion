@@ -8,7 +8,7 @@ export default function ProductCard({ product }) {
 
   const productUrl = `${baseUrl}/product/${product._id}`;
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-  const message = `Hi, I want this product:${product.name}${productUrl}`;
+  const message = `Hi, I want this product: ${product.name} ${productUrl}`;
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   const cover = getPrimaryImage(product);
   const galleryCount = getProductImages(product).length;

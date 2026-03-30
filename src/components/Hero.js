@@ -1,4 +1,8 @@
 export default function Hero() {
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+  const message = "";
+  const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
   return (
     <div
       className="d-flex align-items-center text-center"
@@ -35,7 +39,7 @@ export default function Hero() {
         <div className="mt-3 d-flex flex-column flex-sm-row gap-2 justify-content-center">
           
           <a
-            href="https://wa.me/91XXXXXXXXXX"
+            href={whatsappUrl}
             className="btn btn-warning px-4 w-100 w-sm-auto"
           >
             Shop on WhatsApp
