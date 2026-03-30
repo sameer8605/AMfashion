@@ -1,5 +1,5 @@
 {
-  "name": "freshbite",
+  "name": "shoping",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.13.1",
+    "cloudinary": "^2.9.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.1",
     "next": "16.1.6",
+    "razorpay": "^2.9.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
