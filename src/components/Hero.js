@@ -5,16 +5,30 @@ export default function Hero() {
 
   return (
     <div
-      className="d-flex align-items-center text-center"
+      className="d-flex align-items-center text-center position-relative"
       style={{
         minHeight: "65vh",
-        background: "linear-gradient(135deg, #111, #333)",
+        backgroundImage: "url('/images/bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         color: "white",
       }}
     >
-      <div className="container">
+      {/* ✅ DARK OVERLAY */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0, 0, 0, 0.42)", // 
+          backdropFilter: "blur(6px)",
+          zIndex: 1,
+        }}
+      />
 
-        {/* Heading */}
+      {/* ✅ CONTENT */}
+      <div className="container position-relative" style={{ zIndex: 2 }}>
+
         <h1
           className="fw-bold"
           style={{
@@ -24,7 +38,6 @@ export default function Hero() {
           Upgrade Your Style
         </h1>
 
-        {/* Subtext */}
         <p
           className="text-light mt-2 mx-auto"
           style={{
@@ -35,9 +48,7 @@ export default function Hero() {
           T-Shirts, Jeans & Pathani Collection
         </p>
 
-        {/* Buttons */}
         <div className="mt-3 d-flex flex-column flex-sm-row gap-2 justify-content-center">
-          
           <a
             href={whatsappUrl}
             className="btn btn-warning px-4 w-100 w-sm-auto"
@@ -51,7 +62,6 @@ export default function Hero() {
           >
             Explore Collection
           </a>
-
         </div>
 
       </div>
