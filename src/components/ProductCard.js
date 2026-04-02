@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { getPrimaryImage, getProductImages } from "@/lib/productImages";
-
+import { useRouter } from "next/navigation"; 
 export default function ProductCard({ product }) {
+      const router = useRouter()
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const productUrl = `${baseUrl}/product/${product._id}`;
@@ -13,8 +14,11 @@ export default function ProductCard({ product }) {
   const cover = getPrimaryImage(product);
   const galleryCount = getProductImages(product).length;
 
+  function handleNavigate() {
+    router.push(`/product/${product._id}`);
+  }
   return (
-    <div className="col-6 col-md-3 mb-3">
+    <div className="col-6 col-md-3 mb-3" onClick={handleNavigate}>
       <div className="card shadow-sm h-100">
 
         {/* ✅ Image wrapper */}
@@ -54,7 +58,9 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* ✅ Card Body */}
-        <div className="card-body pt-2 d-flex flex-column">
+        <div className="card-body pt-2 d-flex flex-column"
+    
+        >
           <h6 className="mb-1">{product.name}</h6>
           <p className="text-muted small mb-2 bi bi-currency-rupee">{product.price}</p>
 
@@ -75,7 +81,7 @@ export default function ProductCard({ product }) {
             </a>
           </div>
         </div>
-
+        
       </div>
     </div>
   );

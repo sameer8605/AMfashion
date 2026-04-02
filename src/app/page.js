@@ -45,66 +45,125 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
     <div>
 
       {/* 🔝 Navbar */}
-     <nav className="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
-      <div className="container">
-        {/* Brand Name */}
-        <Link href="/" className="navbar-brand d-flex align-items-center">
-          <Image
-            src="/images/amravati-fashion-logo.png" 
-            alt="Amravati Fashion - Latest Styles Logo" 
-            width={40} 
-            height={40} 
-            priority // This logo loads FAST as it's above the fold
-            className="d-inline-block align-top me-2" // Standard Bootstrap classes
-          />
-          <span className="fw-bold text-dark d-none d-sm-inline">
-            Amravati Fashion
-          </span>
-        </Link>
+      <nav className="navbar sticky-top" style={{ padding: '0 0' }}>
+        <div className="container" style={{ height: '62px' }}>
+          {/* Brand */}
+          <Link href="/" className="navbar-brand d-flex align-items-center" style={{ gap: '10px' }}>
+            <Image
+              src="/images/amravati-fashion-logo.png"
+              alt="Amravati Fashion - Latest Styles Logo"
+              width={38}
+              height={38}
+              priority
+              style={{ borderRadius: '8px' }}
+            />
+            <span style={{ fontWeight: 700, fontSize: '1.05rem', color: '#111', letterSpacing: '0.3px' }}>
+              Amravati Fashion
+            </span>
+          </Link>
 
-        {/* 🍔 Bootstrap Hamburger Button */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={handleNavCollapse}
-          aria-controls="navbarNav"
-          aria-expanded={!isNavCollapsed}
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+          {/* Desktop links */}
+          <div className="d-none d-lg-flex align-items-center" style={{ gap: '32px' }}>
+            <Link href="/" className="nav-desktop-link">Home</Link>
+            <a href="#about" className="nav-desktop-link">About</a>
+            <a href="#contact" className="nav-desktop-link">Contact</a>
+          </div>
 
-        {/* 📱 Collapsible Menu Items */}
-        <div 
-          className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse justify-content-end`} 
-          id="navbarNav"
-        >
-          <div className="navbar-nav pt-2 pt-lg-0">
-            <Link 
-              href="/" 
-              className="text-dark text-decoration-none mx-lg-3 mb-2 mb-lg-0" 
+          {/* Hamburger — mobile only */}
+          <button
+            id="burger-toggle"
+            className={`burger-btn d-lg-none ${!isNavCollapsed ? 'open' : ''}`}
+            onClick={handleNavCollapse}
+            aria-label="Toggle navigation menu"
+            aria-expanded={!isNavCollapsed}
+          >
+            <span className="burger-line"></span>
+            <span className="burger-line"></span>
+            <span className="burger-line"></span>
+          </button>
+        </div>
+      </nav>
+
+      {/* 📱 Full-Page Overlay Menu */}
+      <div
+        className={`mobile-menu-overlay d-lg-none ${!isNavCollapsed ? 'open' : ''}`}
+        aria-hidden={isNavCollapsed}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+      >
+        {/* Full-page dark panel */}
+        <div className="mobile-menu-panel">
+
+          {/* Top bar */}
+          <div className="mobile-menu-header">
+            <span className="mobile-menu-brand">AM Fashion</span>
+            <button
+              className="mobile-menu-close"
+              onClick={() => setIsNavCollapsed(true)}
+              aria-label="Close menu"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Giant nav links */}
+          <nav className="mobile-menu-nav" aria-label="Main navigation">
+            <Link
+              href="/"
+              className="mobile-nav-link"
               onClick={() => setIsNavCollapsed(true)}
             >
-              Home
+              <span className="mobile-nav-num">01</span>Home
             </Link>
-            <a 
-              href="#about" 
-              className="text-dark text-decoration-none mx-lg-3 mb-2 mb-lg-0" 
+
+            <div className="mobile-menu-divider" role="separator" />
+
+            <a
+              href="#products"
+              className="mobile-nav-link"
               onClick={() => setIsNavCollapsed(true)}
             >
-              About
+              <span className="mobile-nav-num">02</span>Shop
             </a>
-            <a 
-              href="#contact" 
-              className="text-dark text-decoration-none ms-lg-3 mb-2 mb-lg-0" 
+
+            <div className="mobile-menu-divider" role="separator" />
+
+            <a
+              href="#about"
+              className="mobile-nav-link"
               onClick={() => setIsNavCollapsed(true)}
             >
-              Contact
+              <span className="mobile-nav-num">03</span>About
+            </a>
+
+            <div className="mobile-menu-divider" role="separator" />
+
+            <a
+              href="#contact"
+              className="mobile-nav-link"
+              onClick={() => setIsNavCollapsed(true)}
+            >
+              <span className="mobile-nav-num">04</span>Contact
+            </a>
+          </nav>
+
+          {/* Bottom WhatsApp CTA */}
+          <div className="mobile-menu-footer">
+            <span className="mobile-menu-footer-label">Chat with us</span>
+            <a
+              href={whatsappUrl}
+              className="mobile-menu-whatsapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsNavCollapsed(true)}
+            >
+              💬 Chat on WhatsApp
             </a>
           </div>
+
         </div>
       </div>
-    </nav>
 
       {/* 🎯 Hero */}
       <Hero />
