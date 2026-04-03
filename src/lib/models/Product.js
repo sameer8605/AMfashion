@@ -4,6 +4,9 @@ const ProductSchema = new mongoose.Schema({
   name: String,
   price: String,
   category: String,
+  // Optional descriptive specs
+  color: String,
+  fabric: String,
   // Legacy primary URL; mirrors images[0] for new products
   image: String,
   images: {

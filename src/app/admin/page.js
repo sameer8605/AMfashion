@@ -14,6 +14,8 @@ export default function AdminDashboard() {
     name: "",
     price: "",
     category: "",
+    color: "",
+    fabric: "",
   });
 
   // 🔄 Fetch products
@@ -115,7 +117,7 @@ export default function AdminDashboard() {
       });
     }
 
-    setForm({ name: "", price: "", category: "" });
+    setForm({ name: "", price: "", category: "", color: "", fabric: "" });
     setImageUrls([]);
     fetchProducts();
   };
@@ -193,6 +195,29 @@ export default function AdminDashboard() {
                 setForm({ ...form, price: e.target.value })
               }
             />
+
+            <div className="row">
+              <div className="col-6">
+                <input
+                  className="form-control mb-2"
+                  placeholder="Color (e.g. Black)"
+                  value={form.color}
+                  onChange={(e) =>
+                    setForm({ ...form, color: e.target.value })
+                  }
+                />
+              </div>
+              <div className="col-6">
+                <input
+                  className="form-control mb-2"
+                  placeholder="Fabric (e.g. Cotton)"
+                  value={form.fabric}
+                  onChange={(e) =>
+                    setForm({ ...form, fabric: e.target.value })
+                  }
+                />
+              </div>
+            </div>
 
             <select
               className="form-control mb-2"
@@ -280,9 +305,16 @@ export default function AdminDashboard() {
 
                   <div className="card-body">
                     <h6 className="mb-1">{p.name}</h6>
-                    <p className="text-muted small mb-2">
+                    <p className="text-muted small mb-1">
                       {p.price}
                     </p>
+                    {(p.color || p.fabric) && (
+                      <p className="small text-muted mb-2">
+                        {p.color && <span>Color: {p.color}</span>}
+                        {p.color && p.fabric && " • "}
+                        {p.fabric && <span>Fabric: {p.fabric}</span>}
+                      </p>
+                    )}
 
                     <button
                       className="btn btn-danger btn-sm w-100"

@@ -18,71 +18,108 @@ export default function ProductCard({ product }) {
     router.push(`/product/${product._id}`);
   }
   return (
-    <div className="col-6 col-md-3 mb-3" onClick={handleNavigate}>
-      <div className="card shadow-sm h-100">
-
-        {/* ✅ Image wrapper */}
-        <div className="p-2">
-          <div
-            className="position-relative"
-            style={{
-              width: "100%",
-              aspectRatio: "1/1",
-              background: "#f8f9fa",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          >
-            {cover ? (
-              <img
-                src={cover}
-                alt={product.name}
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  objectFit: "contain",
-                }}
-              />
-            ) : (
-              <span className="text-muted small">No image</span>
-            )}
-            {galleryCount > 1 && (
-              <span className="position-absolute bottom-0 end-0 m-1 badge text-bg-dark opacity-75">
-                <i className="bi bi-images" aria-hidden /> {galleryCount}
-              </span>
-            )}
-          </div>
+    <div className="col-6 col-md-4 col-lg-3 mb-4">
+  <div 
+    className="card border-0 h-100 product-card" 
+    onClick={handleNavigate}
+    style={{ 
+      cursor: 'pointer',
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+      borderRadius: '16px',
+      overflow: 'hidden'
+    }}
+  >
+    {/* 📸 Image Wrapper */}
+    <div className="position-relative overflow-hidden" style={{ aspectRatio: '1/1', backgroundColor: '#f9f9f9' }}>
+      {cover ? (
+        <img
+          src={cover}
+          alt={product.name}
+          className="product-image"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover', // Changed to cover for a more premium look
+            transition: 'transform 0.5s ease'
+          }}
+        />
+      ) : (
+        <div className="d-flex align-items-center justify-content-center h-100 text-muted small">
+          No Image
         </div>
+      )}
 
-        {/* ✅ Card Body */}
-        <div className="card-body pt-2 d-flex flex-column"
-    
+      {/* Gallery Badge */}
+      {galleryCount > 1 && (
+        <div 
+          className="position-absolute top-0 end-0 m-2 px-2 py-1 rounded-pill bg-white shadow-sm d-flex align-items-center" 
+          style={{ fontSize: '0.7rem', fontWeight: '600', zIndex: 2 }}
         >
-          <h6 className="mb-1">{product.name}</h6>
-          <p className="text-muted small mb-2 bi bi-currency-rupee">{product.price}</p>
-
-          <div className="mt-auto d-flex gap-1">
-            <Link
-              href={`/product/${product._id}`}
-              className="btn btn-outline-primary btn-sm w-50"
-            >
-              View
-            </Link>
-
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              className="btn btn-success btn-sm w-50"
-            >
-              WhatsApp
-            </a>
-          </div>
+          <i className="bi bi-images me-1"></i> {galleryCount}
         </div>
-        
+      )}
+    </div>
+
+    {/* ✨ Card Body */}
+    <div className="card-body p-3 d-flex flex-column">
+      <h6 
+        className="text-dark mb-1 text-truncate" 
+        style={{ fontWeight: '600', fontSize: '0.95rem' }}
+      >
+        {product.name}
+      </h6>
+      
+      <div className="d-flex align-items-center mb-3">
+        <span className="fw-bold text-primary" style={{ fontSize: '1.1rem' }}>
+          ₹{product.price}
+        </span>
+        {/* Optional: Add a 'fake' original price for modern look */}
+        <span className="text-muted text-decoration-line-through ms-2 small">
+          ₹{Math.floor(product.price * 1.2)}
+        </span>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="mt-auto d-flex gap-2">
+        <Link
+          href={`/product/${product._id}`}
+          className="btn btn-light btn-sm flex-grow-1 border-0"
+          style={{ borderRadius: '8px', fontWeight: '500', background: '#f1f3f5' }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          Details
+        </Link>
+
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          className="btn btn-success btn-sm d-flex align-items-center justify-content-center"
+          style={{ width: '40px', borderRadius: '8px' }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <i className="bi bi-whatsapp"></i>
+        </a>
       </div>
     </div>
+  </div>
+
+  {/* Add this CSS to your global styles or a <style> tag */}
+  <style jsx>{`
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+    }
+    .product-card:hover .product-image {
+      transform: scale(1.08);
+    }
+    .btn-success {
+      background-color: #25D366;
+      border: none;
+    }
+    .btn-success:hover {
+      background-color: #128C7E;
+    }
+  `}</style>
+</div>
   );
 }

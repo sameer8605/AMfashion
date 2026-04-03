@@ -57,6 +57,21 @@ export default function ProductDetail({ params }) {
         <div className="col-12 col-md-6">
           <h2 className="mb-3 mt-0">{product.name}</h2>
           <p className="h4 text-success bi bi-currency-rupee">{product.price}</p>
+          {(product.color || product.fabric) && (
+            <p className="mb-2 text-muted">
+              {product.color && (
+                <span>
+                  <strong>Color:</strong> {product.color}
+                </span>
+              )}
+              {product.color && product.fabric && " · "}
+              {product.fabric && (
+                <span>
+                  <strong>Fabric:</strong> {product.fabric}
+                </span>
+              )}
+            </p>
+          )}
           <hr />
           <a
             href={whatsappUrl}

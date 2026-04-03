@@ -44,7 +44,7 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   return (
     <div>
 
-      {/* 🔝 Navbar */}
+      {/*  Navbar */}
       <nav className="navbar sticky-top" style={{ padding: '0 0' }}>
         <div className="container" style={{ height: '62px' }}>
           {/* Brand */}
@@ -84,7 +84,7 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
         </div>
       </nav>
 
-      {/* 📱 Full-Page Overlay Menu */}
+      {/*  Full-Page Overlay Menu */}
       <div
         className={`mobile-menu-overlay d-lg-none ${!isNavCollapsed ? 'open' : ''}`}
         aria-hidden={isNavCollapsed}
@@ -103,7 +103,7 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
               onClick={() => setIsNavCollapsed(true)}
               aria-label="Close menu"
             >
-              ✕
+              <span className="bi bi-x-lg" aria-hidden="true"></span>
             </button>
           </div>
 
@@ -158,14 +158,14 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
               rel="noopener noreferrer"
               onClick={() => setIsNavCollapsed(true)}
             >
-              💬 Chat on WhatsApp
+              <span className="bi bi-whatsapp" aria-hidden="true"></span> Chat on WhatsApp
             </a>
           </div>
 
         </div>
       </div>
 
-      {/* 🎯 Hero */}
+      {/*  Hero */}
       <Hero />
 
       {/* 🧥 Categories */}
@@ -218,18 +218,18 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
         <div className="row">
           <div className="col-4">
-            <p>🚚 Fast Delivery</p>
+            <p><span className="bi bi-truck text-danger"></span> Fast Delivery</p>
           </div>
           <div className="col-4">
-            <p>💰 Affordable Price</p>
+            <p><span className="bi bi-tag text-success"></span> Affordable Price</p>
           </div>
           <div className="col-4">
-            <p>🔥 Latest Trends</p>
+            <p><span className="bi bi-fire text-warning"></span> Latest Trends</p>
           </div>
         </div>
       </div>
 
-      {/* 🧑 About */}
+      {/*  About */}
       <div id="about" className="bg-light py-4">
         <div className="container text-center">
           <h5 className="fw-bold">About Us</h5>
@@ -240,7 +240,7 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
         </div>
       </div>
 
-      {/* 📲 Contact */}
+      {/*  Contact */}
       <div id="contact" className="py-4 text-center">
         <div className="container">
           <h5 className="fw-bold">Contact Us</h5>
@@ -257,7 +257,7 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
         </div>
       </div>
 
-      {/* 💬 Floating WhatsApp */}
+      {/*  Floating WhatsApp */}
       <a
         href={whatsappUrl}
         className="btn btn-success position-fixed"
@@ -267,10 +267,10 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
           borderRadius: "50%",
         }}
       >
-        💬
+        <span className="bi bi-whatsapp" aria-hidden="true"></span>
       </a>
 
-      {/* ⚫ Footer */}
+      {/*  Footer */}
       <footer className="bg-dark text-white text-center py-3">
         <small>© 2026 Amravati Fashion • All Rights Reserved</small>
       </footer>
