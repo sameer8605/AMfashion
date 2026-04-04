@@ -1,36 +1,53 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import Hero from "@/components/Hero";
-import Loader from "@/common/loader";
-import Image from "next/image";
+import SiteNavbar from "@/components/SiteNavbar";
+
+const PRODUCT_SKELETON_KEYS = ["a", "b", "c", "d", "e", "f", "g", "h"];
+const CATEGORY_SKELETON_KEYS = ["c1", "c2", "c3", "c4"];
 
 export default function Home() {
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const message = "";
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
-
-const [isNavCollapsed, setIsNavCollapsed] = useState(true);
-  // Function to toggle the menu
-  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res1 = await fetch("/api/products");
-      const data1 = await res1.json();
-      setProducts(data1);
+    let cancelled = false;
 
-      const res2 = await fetch("/api/categories");
-      const data2 = await res2.json();
-      setCategories(data2);
+    (async () => {
+      try {
+        const [prodRes, catRes] = await Promise.all([
+          fetch("/api/products"),
+          fetch("/api/categories"),
+        ]);
+        const [prodData, catData] = await Promise.all([
+          prodRes.json(),
+          catRes.json(),
+        ]);
+        if (cancelled) return;
+        setProducts(Array.isArray(prodData) ? prodData : []);
+        setCategories(Array.isArray(catData) ? catData : []);
+      } catch (e) {
+        console.error("Failed to load data", e);
+        if (!cancelled) {
+          setProducts([]);
+          setCategories([]);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
     };
-
-    fetchData();
   }, []);
 
   const filteredProducts =
@@ -38,167 +55,58 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
       ? products
       : products.filter((p) => p.category === selectedCategory);
 
-  if(!products.length) {
-    return<Loader/>
-  }
   return (
     <div>
+      <SiteNavbar />
 
-      {/*  Navbar */}
-      <nav className="navbar sticky-top" style={{ padding: '0 0' }}>
-        <div className="container" style={{ height: '62px' }}>
-          {/* Brand */}
-          <Link href="/" className="navbar-brand d-flex align-items-center" style={{ gap: '10px' }}>
-            <Image
-              src="/images/amravati-fashion-logo.png"
-              alt="Amravati Fashion - Latest Styles Logo"
-              width={38}
-              height={38}
-              priority
-              style={{ borderRadius: '8px' }}
-            />
-            <span style={{ fontWeight: 700, fontSize: '1.05rem', color: '#111', letterSpacing: '0.3px' }}>
-              Amravati Fashion
-            </span>
-          </Link>
-
-          {/* Desktop links */}
-          <div className="d-none d-lg-flex align-items-center" style={{ gap: '32px' }}>
-            <Link href="/" className="nav-desktop-link">Home</Link>
-            <a href="#about" className="nav-desktop-link">About</a>
-            <a href="#contact" className="nav-desktop-link">Contact</a>
-          </div>
-
-          {/* Hamburger — mobile only */}
-          <button
-            id="burger-toggle"
-            className={`burger-btn d-lg-none ${!isNavCollapsed ? 'open' : ''}`}
-            onClick={handleNavCollapse}
-            aria-label="Toggle navigation menu"
-            aria-expanded={!isNavCollapsed}
-          >
-            <span className="burger-line"></span>
-            <span className="burger-line"></span>
-            <span className="burger-line"></span>
-          </button>
-        </div>
-      </nav>
-
-      {/*  Full-Page Overlay Menu */}
-      <div
-        className={`mobile-menu-overlay d-lg-none ${!isNavCollapsed ? 'open' : ''}`}
-        aria-hidden={isNavCollapsed}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation menu"
-      >
-        {/* Full-page dark panel */}
-        <div className="mobile-menu-panel">
-
-          {/* Top bar */}
-          <div className="mobile-menu-header">
-            <span className="mobile-menu-brand">AM Fashion</span>
-            <button
-              className="mobile-menu-close"
-              onClick={() => setIsNavCollapsed(true)}
-              aria-label="Close menu"
-            >
-              <span className="bi bi-x-lg" aria-hidden="true"></span>
-            </button>
-          </div>
-
-          {/* Giant nav links */}
-          <nav className="mobile-menu-nav" aria-label="Main navigation">
-            <Link
-              href="/"
-              className="mobile-nav-link"
-              onClick={() => setIsNavCollapsed(true)}
-            >
-              <span className="mobile-nav-num">01</span>Home
-            </Link>
-
-            <div className="mobile-menu-divider" role="separator" />
-
-            <a
-              href="#products"
-              className="mobile-nav-link"
-              onClick={() => setIsNavCollapsed(true)}
-            >
-              <span className="mobile-nav-num">02</span>Shop
-            </a>
-
-            <div className="mobile-menu-divider" role="separator" />
-
-            <a
-              href="#about"
-              className="mobile-nav-link"
-              onClick={() => setIsNavCollapsed(true)}
-            >
-              <span className="mobile-nav-num">03</span>About
-            </a>
-
-            <div className="mobile-menu-divider" role="separator" />
-
-            <a
-              href="#contact"
-              className="mobile-nav-link"
-              onClick={() => setIsNavCollapsed(true)}
-            >
-              <span className="mobile-nav-num">04</span>Contact
-            </a>
-          </nav>
-
-          {/* Bottom WhatsApp CTA */}
-          <div className="mobile-menu-footer">
-            <span className="mobile-menu-footer-label">Chat with us</span>
-            <a
-              href={whatsappUrl}
-              className="mobile-menu-whatsapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsNavCollapsed(true)}
-            >
-              <span className="bi bi-whatsapp" aria-hidden="true"></span> Chat on WhatsApp
-            </a>
-          </div>
-
-        </div>
-      </div>
-
-      {/*  Hero */}
       <Hero />
 
       {/* 🧥 Categories */}
       <div className="container py-4">
         <h5 className="fw-bold text-center mb-3">Shop by Category</h5>
 
-        <div className="row g-2">
-          <div className="col-3">
-            <div
-              onClick={() => setSelectedCategory("all")}
-              className={`category-card text-center p-2  border ${
-                selectedCategory === "all" ? "bg-dark text-white" : ""
-              }`}
-            >
-               <small>All</small>
-            </div>
+        {loading ? (
+          <div className="row g-2">
+            {CATEGORY_SKELETON_KEYS.map((key) => (
+              <div className="col-3" key={key}>
+                <div
+                  className="placeholder-glow rounded border p-2 text-center"
+                  style={{ minHeight: "38px" }}
+                >
+                  <span className="placeholder col-8 rounded" />
+                </div>
+              </div>
+            ))}
           </div>
-
-          {categories.map((cat) => (
-            <div className="col-3" key={cat._id}>
+        ) : (
+          <div className="row g-2">
+            <div className="col-3">
               <div
-                onClick={() => setSelectedCategory(cat.categoryName)}
-                className={`category-card text-center p-2 border ${
-                  selectedCategory === cat.categoryName
-                    ? "bg-dark text-white"
-                    : ""
+                onClick={() => setSelectedCategory("all")}
+                className={`category-card text-center p-2  border ${
+                  selectedCategory === "all" ? "bg-dark text-white" : ""
                 }`}
               >
-                <small>{cat.categoryName}</small>
+                <small>All</small>
               </div>
             </div>
-          ))}
-        </div>
+
+            {categories.map((cat) => (
+              <div className="col-3" key={cat._id}>
+                <div
+                  onClick={() => setSelectedCategory(cat.categoryName)}
+                  className={`category-card text-center p-2 border ${
+                    selectedCategory === cat.categoryName
+                      ? "bg-dark text-white"
+                      : ""
+                  }`}
+                >
+                  <small>{cat.categoryName}</small>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Products */}
@@ -206,9 +114,34 @@ const [isNavCollapsed, setIsNavCollapsed] = useState(true);
         <h5 className="fw-bold mb-3">Latest Collection</h5>
 
         <div className="row g-2">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
+          {loading ? (
+            PRODUCT_SKELETON_KEYS.map((key) => (
+              <div className="col-6 col-md-3 mb-3" key={key}>
+                <div className="card shadow-sm border-0 h-100">
+                  <div className="p-2 placeholder-glow">
+                    <div
+                      className="placeholder w-100 rounded"
+                      style={{ aspectRatio: "1 / 1" }}
+                    />
+                  </div>
+                  <div className="card-body pt-2">
+                    <div className="placeholder-glow">
+                      <p className="placeholder col-9 mb-2" />
+                      <p className="placeholder col-5 mb-0" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          ) : (
+            <div className="col-12 text-center py-5 text-muted">
+              No products found in this category.
+            </div>
+          )}
         </div>
       </div>
 
