@@ -38,11 +38,12 @@ export default function ProductImageCarousel({ product, alt }) {
 
   if (images.length === 1) {
     return (
-      <div className="ratio ratio-1x1 rounded shadow-sm bg-secondary-subtle">
+      <div className="ratio ratio-1x1 rounded shadow-sm bg-secondary-subtle overflow-hidden">
         <img
           src={images[0]}
-          className="d-block w-100 h-100 object-fit-contain p-2"
+          className="d-block w-100 h-100 object-fit-cover"
           alt={alt}
+          draggable={false}
         />
       </div>
     );
@@ -74,10 +75,10 @@ export default function ProductImageCarousel({ product, alt }) {
             key={`${src}-${i}`}
             className={`carousel-item ${i === 0 ? "active" : ""}`}
           >
-            <div className="ratio ratio-1x1 bg-secondary-subtle">
+            <div className="ratio ratio-1x1 bg-secondary-subtle overflow-hidden">
               <img
                 src={src}
-                className="d-block w-100 h-100 object-fit-contain p-2"
+                className="d-block w-100 h-100 object-fit-cover"
                 alt={`${alt} — ${i + 1} of ${images.length}`}
                 draggable={false}
               />

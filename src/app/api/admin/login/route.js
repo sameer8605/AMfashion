@@ -1,38 +1,43 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-const JWT_SECRET = process.env.JWT_SECRET;
-
-console.log(ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET);
+import Admin from "@/lib/models/Admin";
+import { connectDB } from "@/lib/db";
 
 export async function POST(req) {
-  
   try {
+    await connectDB();
+
     const { userName, password } = await req.json();
-console.log("INPUT:", userName, password);
-    if (userName !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-      console.log("credentials invalid");
+     console.log("Login attempt:", password );
+    //  Find admin in DB
+    const admin = await Admin.findOne({ userName });
+    console.log("Admin found:", admin);
+    if (!admin) {
       return NextResponse.json(
-        { success: false, message: "Invalid credentials" },
+        { success: false, error: "User not found" },
         { status: 401 }
       );
     }
 
-    console.log("credentials valid, creating token");
+    //  Check password
+    if (admin.password !== password) {
+      return NextResponse.json(
+        { success: false, error: "Wrong password" },
+        { status: 401 }
+      );
+    }
 
+    //  Create JWT
     const token = jwt.sign(
-      { role: "admin" },
-      JWT_SECRET,
+      { id: admin._id, role: "admin" },
+      process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    console.log("🎫 Token created successfully");
-
-    const response = NextResponse.json({ 
-      success: true, 
-      message: "Login successful" 
+    //  Set cookie
+    const response = NextResponse.json({
+      success: true,
+      message: "Login successful",
     });
 
     response.cookies.set("adminToken", token, {
@@ -40,15 +45,16 @@ console.log("INPUT:", userName, password);
       secure: process.env.NODE_ENV === "production",
       path: "/",
       sameSite: "lax",
-      maxAge: 86400, // 1 day
+      maxAge: 86400,
     });
 
-    console.log("🍪 Cookie set, returning response");
     return response;
-  } catch (error) {
-    console.error("Login error:", error);
+
+  } catch (err) {
+    console.log("Login error:", err);
+
     return NextResponse.json(
-      { success: false, message: "Server error" },
+      { success: false, error: "Server error" },
       { status: 500 }
     );
   }

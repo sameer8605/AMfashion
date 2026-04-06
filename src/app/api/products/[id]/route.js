@@ -33,6 +33,69 @@ export async function GET(req, { params }) {
   }
 }
 
+export async function PUT(req, { params }) {
+  try {
+    await connectDB();
+    const { id } = await params;
+
+    if (!id) {
+      return NextResponse.json({ error: "ID required" }, { status: 400 });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
+    }
+
+    const body = await req.json();
+    const { name, price, category, color, fabric, image, images } = body;
+
+    let imageList = Array.isArray(images)
+      ? images.filter((u) => typeof u === "string" && u.trim()).map((u) => u.trim())
+      : [];
+
+    if (!imageList.length && typeof image === "string" && image.trim()) {
+      imageList = [image.trim()];
+    }
+    imageList = imageList.slice(0, 4);
+
+    if (!name || !price || !category || imageList.length === 0) {
+      return NextResponse.json(
+        {
+          error:
+            "All fields required: name, price, category, and at least one image (up to 4)",
+        },
+        { status: 400 }
+      );
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        name,
+        price,
+        category,
+        color: color?.trim() || undefined,
+        fabric: fabric?.trim() || undefined,
+        image: imageList[0],
+        images: imageList,
+      },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, product: updatedProduct });
+  } catch (err) {
+    console.error("PUT error:", err);
+    return NextResponse.json(
+      { error: "Failed to update product" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(req, { params }) {
   try {
     await connectDB();

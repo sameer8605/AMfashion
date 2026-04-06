@@ -10,6 +10,8 @@ export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -85,41 +87,65 @@ export default function AdminDashboard() {
     setImageUrls((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const addProduct = async () => {
+  const saveProduct = async () => {
     if (imageUrls.length === 0) {
       return alert("Add at least one image (up to 4).");
     }
 
-    const res = await fetch("/api/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...form,
-        images: imageUrls,
-        image: imageUrls[0],
-      }),
-    });
-
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      return alert(data.error || "Could not save product. Try again.");
+    if (!form.name.trim() || !form.price.trim() || !form.category.trim()) {
+      return alert("Please fill in name, price, and category before saving.");
     }
 
-    const saved = data.product ?? data;
-    const savedCount = Array.isArray(saved.images) ? saved.images.length : 0;
-    if (savedCount !== imageUrls.length) {
-      console.warn("Saved product images count mismatch:", {
-        sent: imageUrls.length,
-        saved: savedCount,
-        saved,
+    setSaving(true);
+    try {
+      const url = editingProduct ? `/api/products/${editingProduct._id}` : "/api/products";
+      const method = editingProduct ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...form,
+          images: imageUrls,
+          image: imageUrls[0],
+        }),
       });
-    }
 
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        return alert(
+          data.error ||
+            `Could not ${editingProduct ? "update" : "save"} product. Try again.`
+        );
+      }
+
+      setForm({ name: "", price: "", category: "", color: "", fabric: "" });
+      setImageUrls([]);
+      setEditingProduct(null);
+      fetchProducts();
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const startEdit = (product) => {
+    setEditingProduct(product);
+    setForm({
+      name: product.name || "",
+      price: product.price || "",
+      category: product.category || "",
+      color: product.color || "",
+      fabric: product.fabric || "",
+    });
+    setImageUrls(getProductImages(product));
+  };
+
+  const cancelEdit = () => {
+    setEditingProduct(null);
     setForm({ name: "", price: "", category: "", color: "", fabric: "" });
     setImageUrls([]);
-    fetchProducts();
   };
 
   //  Delete product
@@ -169,12 +195,12 @@ export default function AdminDashboard() {
       {/*  Main Content */}
       <div className="flex-grow-1">
 
-        {/* 🔝 Topbar */}
+        {/*  Topbar */}
         <AdminHeader  />
 
         <div className="container py-4">
 
-          {/* ➕ Add Product Card */}
+          {/*  Add Product Card */}
           <div className="card p-3 mb-4 shadow-sm">
             <h6 className="fw-bold mb-3">Add Product</h6>
 
@@ -272,13 +298,35 @@ export default function AdminDashboard() {
               </div>
             )}
 
+            {editingProduct && (
+              <div className="alert alert-info py-2 mb-3" role="alert">
+                Editing product <strong>{editingProduct.name}</strong>. Save changes or cancel.
+              </div>
+            )}
+
             <button
-              className="btn btn-dark w-100"
-              onClick={addProduct}
-              disabled={uploading || imageUrls.length === 0}
+              className="btn btn-dark w-100 mb-2"
+              onClick={saveProduct}
+              disabled={saving || uploading || imageUrls.length === 0}
             >
-              {uploading ? "Uploading..." : "Add Product"}
+              {saving
+                ? editingProduct
+                  ? "Saving..."
+                  : "Adding..."
+                : editingProduct
+                ? "Update Product"
+                : "Add Product"}
             </button>
+            {editingProduct && (
+              <button
+                type="button"
+                className="btn btn-secondary w-100"
+                onClick={cancelEdit}
+                disabled={saving || uploading}
+              >
+                Cancel edit
+              </button>
+            )}
           </div>
 
           {/*  Product List */}
@@ -316,6 +364,12 @@ export default function AdminDashboard() {
                       </p>
                     )}
 
+                    <button
+                      className="btn btn-primary btn-sm w-100 mb-2"
+                      onClick={() => startEdit(p)}
+                    >
+                      Edit
+                    </button>
                     <button
                       className="btn btn-danger btn-sm w-100"
                       onClick={() => deleteProduct(p._id)}
