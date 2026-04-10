@@ -1,0 +1,178 @@
+.footer {
+  background-color: #111;
+  color: #fff;
+  padding: 60px 0 20px 0;
+  margin-top: 80px;
+  border-top: 1px solid #222;
+}
+
+.footerContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footerSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.description {
+  color: #aaa;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: #222;
+  border-radius: 50%;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.socialIcon:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.linkList li {
+  margin-bottom: 10px;
+}
+
+.linkList a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.linkList a:hover {
+  color: #fff;
+}
+
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contactList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.contactList .bi {
+  color: #666;
+  margin-top: 2px;
+  min-width: 16px;
+}
+
+.contactList a {
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contactList a:hover {
+  color: #fff;
+}
+
+.footerBottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #222;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 0 20px 0;
+    margin-top: 60px;
+  }
+
+  .footerContent {
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  .sectionTitle {
+    font-size: 1rem;
+  }
+
+  .linkList a,
+  .description,
+  .contactList li {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 30px 0 16px 0;
+    margin-top: 40px;
+  }
+
+  .footerContent {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footerSection {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #222;
+  }
+
+  .footerSection:last-child {
+    border-bottom: none;
+  }
+
+  .sectionTitle {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  .socialLinks {
+    gap: 12px;
+  }
+
+  .socialIcon {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+}

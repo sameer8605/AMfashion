@@ -1,0 +1,120 @@
+.legalPage {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.lastUpdated {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+.section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 20px 0 12px 0;
+}
+
+.section p {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+.list {
+  margin: 16px 0 16px 32px;
+  padding: 0;
+}
+
+.list li {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+.contactInfo {
+  background-color: #f8f9fa;
+  border-left: 4px solid #333;
+  padding: 20px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.contactInfo p {
+  margin-bottom: 10px;
+}
+
+.contactInfo strong {
+  color: #111;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .legalPage {
+    padding: 24px;
+    margin: 40px auto;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .section h2 {
+    font-size: 1.25rem;
+  }
+
+  .section h3 {
+    font-size: 1rem;
+  }
+
+  .section p,
+  .list li {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .legalPage {
+    padding: 16px;
+    margin: 20px auto;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.1rem;
+  }
+
+  .list {
+    margin: 12px 0 12px 24px;
+  }
+}
