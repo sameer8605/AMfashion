@@ -47,12 +47,12 @@ export default function SiteNavbar() {
             <Link href="/" className="nav-desktop-link">
               Home
             </Link>
-            <a href="/#about" className="nav-desktop-link">
+            <Link href="/aboutus" className="nav-desktop-link">
               About
-            </a>
-            <a href="/#contact" className="nav-desktop-link">
+            </Link>
+            <Link href="/contactus" className="nav-desktop-link">
               Contact
-            </a>
+            </Link>
           </div>
 
           <button
@@ -101,33 +101,33 @@ export default function SiteNavbar() {
 
             <div className="mobile-menu-divider" role="separator" />
 
-            <a
+            <Link
               href="/#products"
               className="mobile-nav-link"
               onClick={() => setIsNavCollapsed(true)}
             >
               <span className="mobile-nav-num">02</span>Shop
-            </a>
+            </Link>
 
             <div className="mobile-menu-divider" role="separator" />
 
-            <a
-              href="/#about"
+            <Link
+              href="/aboutus"
               className="mobile-nav-link"
               onClick={() => setIsNavCollapsed(true)}
             >
               <span className="mobile-nav-num">03</span>About
-            </a>
+            </Link>
 
             <div className="mobile-menu-divider" role="separator" />
 
-            <a
-              href="/#contact"
+            <Link
+              href="/contactus"
               className="mobile-nav-link"
               onClick={() => setIsNavCollapsed(true)}
             >
               <span className="mobile-nav-num">04</span>Contact
-            </a>
+            </Link>
           </nav>
 
           <div className="mobile-menu-footer">

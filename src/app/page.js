@@ -162,34 +162,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/*  About */}
-      <div id="about" className="bg-light py-4">
-        <div className="container text-center">
-          <h5 className="fw-bold">About Us</h5>
-          <p className="small text-muted">
-            We are a local Amravati fashion store bringing you the
-            latest styles at affordable prices. Shop easily via WhatsApp!
-          </p>
-        </div>
-      </div>
-
-      {/*  Contact */}
-      <div id="contact" className="py-4 text-center">
-        <div className="container">
-          <h5 className="fw-bold">Contact Us</h5>
-          <p className="small text-muted">
-            Have questions? Chat with us instantly
-          </p>
-
-          <a
-            href={whatsappUrl}
-            className="btn btn-success"
-          >
-            Chat on WhatsApp
-          </a>
-        </div>
-      </div>
-
       {/*  Floating WhatsApp */}
       <a
         href={whatsappUrl}
@@ -202,12 +174,7 @@ export default function Home() {
       >
         <span className="bi bi-whatsapp" aria-hidden="true"></span>
       </a>
-
-      {/*  Footer */}
-      <footer className="bg-dark text-white text-center py-3">
-        <small>© 2026 Amravati Fashion • All Rights Reserved</small>
-      </footer>
-
+     
     </div>
   );
 }
