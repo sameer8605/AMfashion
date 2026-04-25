@@ -53,7 +53,7 @@ export default function Hero() {
             href={whatsappUrl}
             className="btn btn-warning px-4 w-100 w-sm-auto"
           >
-            Shop on WhatsApp
+            Chat on WhatsApp
           </a>
 
           <a

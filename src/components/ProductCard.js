@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { getPrimaryImage, getProductImages } from "@/lib/productImages";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
+import { useDispatch } from "@/redux/hooks";
+import { addToCart } from "@/redux/slices/cartSlice";
+
 export default function ProductCard({ product }) {
-      const router = useRouter()
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const productUrl = `${baseUrl}/product/${product._id}`;
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
@@ -90,15 +94,17 @@ export default function ProductCard({ product }) {
           Details
         </Link>
 
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          className="btn btn-success btn-sm d-flex align-items-center justify-content-center"
-          style={{ width: '40px', borderRadius: '8px' }}
-          onClick={(e) => e.stopPropagation()}
+        <button
+          type="button"
+          className="btn btn-primary btn-sm flex-grow-1"
+          style={{ borderRadius: '8px', fontWeight: '500' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(addToCart(product));
+          }}
         >
-          <i className="bi bi-whatsapp"></i>
-        </a>
+          Add to Cart
+        </button>
       </div>
     </div>
   </div>

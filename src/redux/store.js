@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from "./slices/cartSlice";
+import cartReducer, { hydrateCart } from "./slices/cartSlice";
 
 export const store = configureStore({
-    reducer:{
-        cart: cartReducer
-    }
+  reducer: {
+    cart: cartReducer,
+  },
 });
+
+export { hydrateCart };
 
 // Subscribe to store changes and save cart to localStorage
 if (typeof window !== "undefined") {

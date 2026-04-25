@@ -7,6 +7,11 @@ const ProductSchema = new mongoose.Schema({
   // Optional descriptive specs
   color: String,
   fabric: String,
+  sizes: {
+    type: [String],
+    default: [],
+  },
+  productDetails: String,
   // Legacy primary URL; mirrors images[0] for new products
   image: String,
   images: {

@@ -2,14 +2,46 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "@/redux/hooks";
+import { usePathname } from "next/navigation";
 
 export default function SiteNavbar() {
+  const pathname = usePathname();
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent("")}`;
 
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("currentUser");
+    if (stored) {
+      try {
+        const parsedUser = JSON.parse(stored);
+        if (parsedUser && typeof parsedUser === 'object') {
+          // Wrap in setTimeout to move the state update out of the synchronous execution of the effect
+          // This avoids the "cascading render" warning in React 18+
+          setTimeout(() => {
+            setUser(parsedUser);
+          }, 0);
+        }
+      } catch (error) {
+        console.error("Failed to parse user from localStorage:", error);
+        localStorage.removeItem("currentUser");
+      }
+    }
+  }, []);
+  const cartCount = useSelector((state) => state.cart.items.length || 0);
+
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    localStorage.removeItem("currentUser");
+    setUser(null);
+    setIsNavCollapsed(true);
+  };
 
   return (
     <>
@@ -42,7 +74,7 @@ export default function SiteNavbar() {
 
           <div
             className="d-none d-lg-flex align-items-center"
-            style={{ gap: "32px" }}
+            style={{ gap: "24px" }}
           >
             <Link href="/" className="nav-desktop-link">
               Home
@@ -53,20 +85,55 @@ export default function SiteNavbar() {
             <Link href="/contactus" className="nav-desktop-link">
               Contact
             </Link>
+            <Link href="/cart" className="nav-desktop-link position-relative">
+              <span className="bi bi-cart"></span>
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {cartCount}
+              </span>
+            </Link>
+            {user ? (
+              <>
+                <Link href="/orders" className="nav-desktop-link">
+                  My Orders
+                </Link>
+                <button
+                  type="button"
+                  className="nav-desktop-link btn btn-link p-0"
+                  onClick={handleLogout}
+                  style={{ color: "#111", textDecoration: "none" }}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link href={`/login?redirect=${pathname}`} className="nav-desktop-link">
+                Login
+              </Link>
+            )}
           </div>
 
-          <button
-            id="burger-toggle"
-            type="button"
-            className={`burger-btn d-lg-none ${!isNavCollapsed ? "open" : ""}`}
-            onClick={handleNavCollapse}
-            aria-label="Toggle navigation menu"
-            aria-expanded={!isNavCollapsed}
-          >
-            <span className="burger-line" />
-            <span className="burger-line" />
-            <span className="burger-line" />
-          </button>
+          <div className="d-flex align-items-center d-lg-none" style={{ gap: "12px" }}>
+            <Link href="/cart" className="nav-desktop-link position-relative p-2">
+              <span className="bi bi-cart fs-5"></span>
+              {cartCount > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "0.65rem", padding: "0.35em 0.5em" }}>
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            <button
+              id="burger-toggle"
+              type="button"
+              className={`burger-btn ${!isNavCollapsed ? "open" : ""}`}
+              onClick={handleNavCollapse}
+              aria-label="Toggle navigation menu"
+              aria-expanded={!isNavCollapsed}
+            >
+              <span className="burger-line" />
+              <span className="burger-line" />
+              <span className="burger-line" />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -80,14 +147,24 @@ export default function SiteNavbar() {
         <div className="mobile-menu-panel">
           <div className="mobile-menu-header">
             <span className="mobile-menu-brand">AM Fashion</span>
-            <button
-              type="button"
-              className="mobile-menu-close"
-              onClick={() => setIsNavCollapsed(true)}
-              aria-label="Close menu"
-            >
-              <span className="bi bi-x-lg" aria-hidden="true" />
-            </button>
+            <div className="d-flex align-items-center" style={{ gap: "16px" }}>
+              <Link href="/cart" className="position-relative p-1 text-white" onClick={() => setIsNavCollapsed(true)}>
+                <span className="bi bi-cart fs-4"></span>
+                {cartCount > 0 && (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "0.6rem", padding: "0.3em 0.45em" }}>
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+              <button
+                type="button"
+                className="mobile-menu-close"
+                onClick={() => setIsNavCollapsed(true)}
+                aria-label="Close menu"
+              >
+                <span className="bi bi-x-lg" aria-hidden="true" />
+              </button>
+            </div>
           </div>
 
           <nav className="mobile-menu-nav" aria-label="Main navigation">
@@ -128,6 +205,41 @@ export default function SiteNavbar() {
             >
               <span className="mobile-nav-num">04</span>Contact
             </Link>
+
+            <div className="mobile-menu-divider" role="separator" />
+
+            {user ? (
+              <>
+                <Link
+                  href="/orders"
+                  className="mobile-nav-link"
+                  onClick={() => setIsNavCollapsed(true)}
+                >
+                  <span className="mobile-nav-num">05</span>My Orders
+                </Link>
+
+                <div className="mobile-menu-divider" role="separator" />
+
+                <button
+                  type="button"
+                  className="mobile-nav-link border-0 bg-transparent text-start w-100"
+                  onClick={() => {
+                    handleLogout();
+                    setIsNavCollapsed(true);
+                  }}
+                >
+                  <span className="mobile-nav-num">06</span>Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href={`/login?redirect=${pathname}`}
+                className="mobile-nav-link"
+                onClick={() => setIsNavCollapsed(true)}
+              >
+                <span className="mobile-nav-num">05</span>Login
+              </Link>
+            )}
           </nav>
 
           <div className="mobile-menu-footer">

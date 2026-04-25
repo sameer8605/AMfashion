@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "@/redux/hooks";
+import { addToCart } from "@/redux/slices/cartSlice";
 import ProductImageCarousel from "@/components/ProductImageCarousel";
 import SiteNavbar from "@/components/SiteNavbar";
 
@@ -8,10 +11,13 @@ export default function ProductDetail({ params }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const resolvedParams = use(params);
   const id = resolvedParams.id;
+  const router = useRouter();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [selectedSize, setSelectedSize] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let cancelled = false;
@@ -117,20 +123,71 @@ export default function ProductDetail({ params }) {
                 {product.color && product.fabric && " · "}
                 {product.fabric && (
                   <span>
-                    <strong>Fabric:</strong> {product.fabric}
-                  </span>
+                    <strong>Fabric:</strong> {product.fabric}</span>
                 )}
               </p>
             )}
+            {product.sizes && product.sizes.length > 0 && (
+              <p className="mb-2 text-muted">
+                <strong>Sizes:</strong> {product.sizes.join(", ")}
+              </p>
+            )}
+            {product.productDetails && (
+              <div className="mb-3">
+                <h5>Product Details</h5>
+                <p className="text-muted">{product.productDetails}</p>
+              </div>
+            )}
+            {product.sizes && product.sizes.length > 0 && (
+              <div className="mb-3">
+                <h5>Size</h5>
+                <div className="d-flex gap-2 flex-wrap">
+                  {product.sizes.map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      className={`btn ${selectedSize === size ? 'btn-primary' : 'btn-outline-primary'} btn-sm`}
+                      onClick={() => setSelectedSize(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+                {!selectedSize && (
+                  <small className="text-danger">Please select a size</small>
+                )}
+              </div>
+            )}
             <hr />
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-success btn-lg w-100 mt-3"
-            >
-              Order on WhatsApp
-            </a>
+            <div className="d-flex gap-2">
+              <button
+                type="button"
+                className="btn btn-primary btn-lg flex-fill"
+                onClick={() => {
+                  if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+                    alert("Please select a size before adding to cart");
+                    return;
+                  }
+                  dispatch(addToCart({ ...product, selectedSize }));
+                }}
+              >
+                Add to Cart
+              </button>
+              <button
+                type="button"
+                className="btn btn-success btn-lg flex-fill"
+                onClick={() => {
+                  if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+                    alert("Please select a size before buying");
+                    return;
+                  }
+                  dispatch(addToCart({ ...product, selectedSize }));
+                  router.push("/cart");
+                }}
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
         </div>
       </div>

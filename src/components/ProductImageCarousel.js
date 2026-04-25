@@ -1,17 +1,24 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { Carousel } from "bootstrap";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getProductImages } from "@/lib/productImages";
 
 export default function ProductImageCarousel({ product, alt }) {
   const images = useMemo(() => getProductImages(product), [product]);
   const carouselRef = useRef(null);
   const carouselId = `product-carousel-${String(product?._id ?? "x")}`;
+  const [Carousel, setCarousel] = useState(null);
+
+  useEffect(() => {
+    // Dynamically import Bootstrap Carousel to avoid SSR issues
+    import("bootstrap").then(({ Carousel: BootstrapCarousel }) => {
+      setCarousel(() => BootstrapCarousel);
+    });
+  }, []);
 
   useEffect(() => {
     const el = carouselRef.current;
-    if (!el || images.length < 2) return;
+    if (!el || images.length < 2 || !Carousel) return;
 
     const instance = Carousel.getOrCreateInstance(el, {
       interval: false,
@@ -24,7 +31,7 @@ export default function ProductImageCarousel({ product, alt }) {
       const existing = Carousel.getInstance(el);
       if (existing) existing.dispose();
     };
-  }, [carouselId, images.length]);
+  }, [carouselId, images.length, Carousel]);
 
   if (images.length === 0) {
     return (

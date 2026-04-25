@@ -25,7 +25,7 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const { name, price, category, color, fabric, image, images } = body;
+    const { name, price, category, color, fabric, sizes, productDetails, image, images } = body;
 
     let imageList = Array.isArray(images)
       ? images.filter((u) => typeof u === "string" && u.trim()).map((u) => u.trim())
@@ -53,6 +53,8 @@ export async function POST(req) {
       category,
       color: color?.trim() || undefined,
       fabric: fabric?.trim() || undefined,
+      sizes: Array.isArray(sizes) ? sizes.filter(s => s.trim()).map(s => s.trim()) : [],
+      productDetails: productDetails?.trim() || undefined,
       image: imageList[0],
       images: imageList,
     });
