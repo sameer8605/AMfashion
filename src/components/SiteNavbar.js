@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "@/redux/hooks";
 import { usePathname } from "next/navigation";
 
-export default function SiteNavbar() {
+export default function SiteNavbar({ fixedNav = false }) {
   const pathname = usePathname();
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent("")}`;
@@ -43,9 +43,14 @@ export default function SiteNavbar() {
     setIsNavCollapsed(true);
   };
 
+  const navbarClass = fixedNav ? "navbar fixed-top" : "navbar sticky-top";
+  const navbarStyle = fixedNav
+    ? { padding: "0 0", position: "fixed", top: 0, left: 0, right: 0, width: "100%", zIndex: 2000 }
+    : { padding: "0 0" };
+
   return (
     <>
-      <nav className="navbar sticky-top" style={{ padding: "0 0" }}>
+      <nav className={navbarClass} style={navbarStyle}>
         <div className="container" style={{ height: "62px" }}>
           <Link
             href="/"

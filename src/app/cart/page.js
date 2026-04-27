@@ -214,28 +214,52 @@ export default function CartPage() {
 
   return (
     <>
-      <SiteNavbar />
-      <div className="bg-light min-vh-100 pb-5 mb-5 mb-lg-0">
+      <SiteNavbar fixedNav />
+      <div
+        className="bg-light min-vh-100 pb-5 mb-5 mb-lg-0"
+        style={{
+          paddingTop: '62px',
+          paddingBottom: '95px',
+          overflowX: 'hidden',
+          touchAction: 'pan-y',
+          minHeight: 'calc(100vh - 62px)',
+        }}
+      >
         <div className="container py-4">
           {/*  Step Indicator */}
-          <div className="d-flex justify-content-center mb-5 mt-2">
+          <div className="d-flex flex-wrap justify-content-center mb-5 mt-2 gap-2">
             <div className="d-flex align-items-center">
               <div className={`d-flex align-items-center justify-content-center rounded-circle ${checkoutStep === 'bag' ? 'bg-dark text-white' : 'bg-success text-white'}`} style={{ width: '32px', height: '32px', fontSize: '14px', fontWeight: 'bold' }}>
                 {checkoutStep === 'bag' ? '1' : <i className="bi bi-check-lg"></i>}
               </div>
-              <span className={`ms-2 small fw-bold ${checkoutStep === 'bag' ? 'text-dark' : 'text-success'}`}>BAG</span>
-              <div className="mx-3 bg-secondary opacity-25" style={{ width: '40px', height: '1px' }}></div>
-              
+              <span className={`ms-2 small fw-bold ${checkoutStep === 'bag' ? 'text-dark' : 'text-success'} text-nowrap`}>
+                <span className="d-none d-sm-inline">BAG</span>
+                <span className="d-inline d-sm-none">BAG</span>
+              </span>
+            </div>
+            <div className="d-flex align-items-center mx-0 mx-sm-3">
+              <div className="bg-secondary opacity-25" style={{ width: '40px', height: '1px' }}></div>
+            </div>
+            <div className="d-flex align-items-center">
               <div className={`d-flex align-items-center justify-content-center rounded-circle ${checkoutStep === 'address' ? 'bg-dark text-white' : checkoutStep === 'payment' ? 'bg-success text-white' : 'bg-white border text-muted'}`} style={{ width: '32px', height: '32px', fontSize: '14px', fontWeight: 'bold' }}>
                 {checkoutStep === 'payment' ? <i className="bi bi-check-lg"></i> : '2'}
               </div>
-              <span className={`ms-2 small fw-bold ${checkoutStep === 'address' ? 'text-dark' : checkoutStep === 'payment' ? 'text-success' : 'text-muted'}`}>ADDRESS</span>
-              <div className="mx-3 bg-secondary opacity-25" style={{ width: '40px', height: '1px' }}></div>
-              
+              <span className={`ms-2 small fw-bold ${checkoutStep === 'address' ? 'text-dark' : checkoutStep === 'payment' ? 'text-success' : 'text-muted'} text-nowrap`}>
+                <span className="d-none d-sm-inline">ADDRESS</span>
+                <span className="d-inline d-sm-none">ADDR</span>
+              </span>
+            </div>
+            <div className="d-flex align-items-center mx-0 mx-sm-3">
+              <div className="bg-secondary opacity-25" style={{ width: '40px', height: '1px' }}></div>
+            </div>
+            <div className="d-flex align-items-center">
               <div className={`d-flex align-items-center justify-content-center rounded-circle ${checkoutStep === 'payment' ? 'bg-dark text-white' : 'bg-white border text-muted'}`} style={{ width: '32px', height: '32px', fontSize: '14px', fontWeight: 'bold' }}>
                 3
               </div>
-              <span className={`ms-2 small fw-bold ${checkoutStep === 'payment' ? 'text-dark' : 'text-muted'}`}>PAYMENT</span>
+              <span className={`ms-2 small fw-bold ${checkoutStep === 'payment' ? 'text-dark' : 'text-muted'} text-nowrap`}>
+                <span className="d-none d-sm-inline">PAYMENT</span>
+                <span className="d-inline d-sm-none">PAY</span>
+              </span>
             </div>
           </div>
 
@@ -396,14 +420,14 @@ export default function CartPage() {
 
                     <div className="mb-4">
                       <div 
-                        className={`p-3 border rounded-3 mb-3 cursor-pointer d-flex align-items-center ${paymentMethod === 'COD' ? 'border-dark bg-light' : ''}`}
+                        className={`p-3 border rounded-3 mb-3 cursor-pointer d-flex align-items-center flex-wrap gap-2 ${paymentMethod === 'COD' ? 'border-dark bg-light' : ''}`}
                         onClick={() => setPaymentMethod('COD')}
                         style={{ cursor: 'pointer' }}
                       >
                         <div className={`rounded-circle border me-3 d-flex align-items-center justify-content-center ${paymentMethod === 'COD' ? 'bg-dark border-dark' : 'bg-white'}`} style={{ width: '20px', height: '20px' }}>
                           {paymentMethod === 'COD' && <div className="bg-white rounded-circle" style={{ width: '8px', height: '8px' }}></div>}
                         </div>
-                        <div>
+                        <div style={{ minWidth: 0 }}>
                           <h6 className="fw-bold mb-0">Cash On Delivery (COD)</h6>
                           <p className="small text-muted mb-0">Pay when you receive your order</p>
                         </div>
@@ -411,14 +435,14 @@ export default function CartPage() {
                       </div>
 
                       <div 
-                        className={`p-3 border rounded-3 cursor-pointer d-flex align-items-center ${paymentMethod === 'RAZORPAY' ? 'border-dark bg-light' : ''}`}
+                        className={`p-3 border rounded-3 cursor-pointer d-flex align-items-center flex-wrap gap-2 ${paymentMethod === 'RAZORPAY' ? 'border-dark bg-light' : ''}`}
                         onClick={() => setPaymentMethod('RAZORPAY')}
                         style={{ cursor: 'pointer' }}
                       >
                         <div className={`rounded-circle border me-3 d-flex align-items-center justify-content-center ${paymentMethod === 'RAZORPAY' ? 'bg-dark border-dark' : 'bg-white'}`} style={{ width: '20px', height: '20px' }}>
                           {paymentMethod === 'RAZORPAY' && <div className="bg-white rounded-circle" style={{ width: '8px', height: '8px' }}></div>}
                         </div>
-                        <div>
+                        <div style={{ minWidth: 0 }}>
                           <h6 className="fw-bold mb-0">Razorpay (Online Payment)</h6>
                           <p className="small text-muted mb-0">Pay securely via Cards, UPI, Netbanking</p>
                         </div>
@@ -510,14 +534,14 @@ export default function CartPage() {
 
       {/* 📱 Mobile Sticky Bottom Bar */}
       {cart.items.length > 0 && (
-        <div className="d-lg-none fixed-bottom bg-white border-top shadow-lg p-3">
-          <div className="container p-0">
-            <div className="d-flex align-items-center justify-content-between">
+        <div className="d-lg-none fixed-bottom bg-white border-top shadow-lg p-3" style={{ left: 0, right: 0, width: '100%', zIndex: 2000 }}>
+          <div className="container-fluid p-0">
+            <div className="d-flex flex-column flex-sm-row align-items-center gap-2">
               <div className="d-flex flex-column">
                 <span className="fw-bold text-dark fs-5">₹{cart.total}</span>
                 <span className="text-success small fw-bold" style={{ fontSize: '11px' }}>VIEW DETAILS</span>
               </div>
-              <div style={{ width: '60%' }}>
+              <div className="flex-fill">
                 {checkoutStep === "bag" && (
                   <button 
                     className="btn btn-dark w-100 py-2 fw-bold" 
