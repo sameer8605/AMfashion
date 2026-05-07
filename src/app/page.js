@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useRef, Suspense } from "react";
 import ProductCard from "@/components/ProductCard";
 import Hero from "@/components/Hero";
 import SiteNavbar from "@/components/SiteNavbar";
+import { useSearchParams } from "next/navigation";
 
 const PRODUCT_SKELETON_KEYS = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const CATEGORY_SKELETON_KEYS = ["c1", "c2", "c3", "c4"];
 
-export default function Home() {
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
+  const productsRef = useRef(null);
+  
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const message = "";
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
@@ -17,6 +22,17 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Reset category when searching
+    if (search) {
+      setSelectedCategory("all");
+      // Scroll to products section when search changes
+      setTimeout(() => {
+        productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, [search]);
 
   useEffect(() => {
     let cancelled = false;
@@ -50,10 +66,28 @@ export default function Home() {
     };
   }, []);
 
-  const filteredProducts =
-    selectedCategory === "all"
-      ? products
-      : products.filter((p) => p.category === selectedCategory);
+  const filteredProducts = useMemo(() => {
+    let result = products;
+    
+    // Filter by Category
+    if (selectedCategory !== "all") {
+      result = result.filter((p) => p.category === selectedCategory);
+    }
+    
+    // Filter by Search (Name, Category, etc)
+    if (search) {
+      const query = search.toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.name?.toLowerCase().includes(query) ||
+          p.category?.toLowerCase().includes(query) ||
+          p.fabric?.toLowerCase().includes(query) ||
+          p.color?.toLowerCase().includes(query)
+      );
+    }
+    
+    return result;
+  }, [products, selectedCategory, search]);
 
   return (
     <div>
@@ -110,8 +144,17 @@ export default function Home() {
       </div>
 
       {/* Products */}
-      <div id="products" className="container py-3">
-        <h5 className="fw-bold mb-3">Latest Collection</h5>
+      <div id="products" ref={productsRef} className="container py-3" style={{ scrollMarginTop: "80px" }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h5 className="fw-bold mb-0">
+            {search ? `Search results for "${search}"` : "Latest Collection"}
+          </h5>
+          {search && (
+            <span className="badge bg-secondary rounded-pill">
+              {filteredProducts.length} items
+            </span>
+          )}
+        </div>
 
         <div className="row g-2">
           {loading ? (
@@ -176,5 +219,19 @@ export default function Home() {
       </a>
      
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="spinner-border text-dark" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   );
 }

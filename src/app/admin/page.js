@@ -26,6 +26,7 @@ export default function AdminDashboard() {
     category: "",
     color: "",
     fabric: "",
+    sellerName: "",
     sizes: [],
     productDetails: "",
   });
@@ -149,7 +150,7 @@ export default function AdminDashboard() {
         );
       }
 
-      setForm({ name: "", price: "", category: "", color: "", fabric: "", sizes: [], productDetails: "" });
+      setForm({ name: "", price: "", category: "", color: "", fabric: "", sellerName: "", sizes: [], productDetails: "" });
       setImageUrls([]);
       setEditingProduct(null);
       fetchProducts();
@@ -166,6 +167,7 @@ export default function AdminDashboard() {
       category: product.category || "",
       color: product.color || "",
       fabric: product.fabric || "",
+      sellerName: product.sellerName || "",
       sizes: product.sizes || [],
       productDetails: product.productDetails || "",
     });
@@ -174,7 +176,7 @@ export default function AdminDashboard() {
 
   const cancelEdit = () => {
     setEditingProduct(null);
-    setForm({ name: "", price: "", category: "", color: "", fabric: "", sizes: [], productDetails: "" });
+    setForm({ name: "", price: "", category: "", color: "", fabric: "", sellerName: "", sizes: [], productDetails: "" });
     setImageUrls([]);
   };
 
@@ -334,6 +336,13 @@ export default function AdminDashboard() {
                     ))}
                   </div>
                 </div>
+
+                <input
+                  className="form-control mb-2"
+                  placeholder="Seller Name (e.g. Amravati Fashion)"
+                  value={form.sellerName}
+                  onChange={(e) => setForm({ ...form, sellerName: e.target.value })}
+                />
 
                 <textarea
                   className="form-control mb-2"

@@ -7,6 +7,10 @@ const ProductSchema = new mongoose.Schema({
   // Optional descriptive specs
   color: String,
   fabric: String,
+  sellerName: {
+    type: String,
+    default: "Amravati Fashion",
+  },
   sizes: {
     type: [String],
     default: [],

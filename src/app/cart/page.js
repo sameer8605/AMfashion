@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "@/redux/hooks";
 import {
@@ -13,7 +13,7 @@ import SiteNavbar from "@/components/SiteNavbar";
 import { getPrimaryImage } from "@/lib/productImages";
 import Link from "next/link";
 
-export default function CartPage() {
+function CartContent() {
   const router = useRouter();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -579,5 +579,19 @@ export default function CartPage() {
         </div>
       )}
     </>
+  );
+}
+
+export default function CartPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="spinner-border text-dark" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }>
+      <CartContent />
+    </Suspense>
   );
 }

@@ -47,7 +47,7 @@ export async function PUT(req, { params }) {
     }
 
     const body = await req.json();
-    const { name, price, category, color, fabric, sizes, productDetails, image, images } = body;
+    const { name, price, category, color, fabric, sellerName, sizes, productDetails, image, images } = body;
 
     let imageList = Array.isArray(images)
       ? images.filter((u) => typeof u === "string" && u.trim()).map((u) => u.trim())
@@ -76,6 +76,7 @@ export async function PUT(req, { params }) {
         category,
         color: color?.trim() || undefined,
         fabric: fabric?.trim() || undefined,
+        sellerName: sellerName?.trim() || "Amravati Fashion",
         sizes: Array.isArray(sizes) ? sizes.filter(s => s.trim()).map(s => s.trim()) : [],
         productDetails: productDetails?.trim() || undefined,
         image: imageList[0],
