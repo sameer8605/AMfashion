@@ -20,6 +20,12 @@ export default function AdminDashboard() {
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+  
+  //  Filtering & Searching States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("all"); // all, today, week, month
+  
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -31,14 +37,14 @@ export default function AdminDashboard() {
     productDetails: "",
   });
 
-  // 🔄 Fetch products
+  //  Fetch products
   const fetchProducts = async () => {
     const res = await fetch("/api/products");
     const data = await res.json();
     setProducts(data);
   };
 
-  // 🔄 Fetch orders
+  //  Fetch orders
   const fetchOrders = async () => {
     setLoadingOrders(true);
     try {
@@ -211,6 +217,40 @@ export default function AdminDashboard() {
   }
 };
 
+  const filteredOrders = orders.filter((order) => {
+    // Status Filter
+    if (statusFilter !== "all" && order.status !== statusFilter) return false;
+
+    // Search Filter (ID or Phone)
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const idMatch = order._id.toLowerCase().includes(q);
+      const phoneMatch = order.contactPhone?.toLowerCase().includes(q);
+      const nameMatch = order.address?.name?.toLowerCase().includes(q);
+      if (!idMatch && !phoneMatch && !nameMatch) return false;
+    }
+
+    // Date Filter
+    if (dateFilter !== "all") {
+      const orderDate = new Date(order.createdAt);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (dateFilter === "today") {
+        if (orderDate < today) return false;
+      } else if (dateFilter === "week") {
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        if (orderDate < weekAgo) return false;
+      } else if (dateFilter === "month") {
+        const monthAgo = new Date();
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        if (orderDate < monthAgo) return false;
+      }
+    }
+
+    return true;
+  });
 
   return (
     <div className="d-flex">
@@ -495,14 +535,67 @@ export default function AdminDashboard() {
           ) : (
             /* Orders List */
             <div className="card shadow-sm border-0">
-              <div className="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                <h6 className="fw-bold mb-0">All Orders</h6>
-                <button
-                  className="btn btn-sm btn-outline-dark"
-                  onClick={fetchOrders}
-                >
-                  Refresh
-                </button>
+              <div className="card-header bg-white py-3">
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                  <h6 className="fw-bold mb-0">All Orders</h6>
+                  <button
+                    className="btn btn-sm btn-outline-dark d-md-none"
+                    onClick={fetchOrders}
+                  >
+                    Refresh
+                  </button>
+                </div>
+                
+                {/* 🔍 Filter & Search Bar */}
+                <div className="row g-2 mt-3">
+                  <div className="col-12 col-md-4">
+                    <div className="input-group input-group-sm">
+                      <span className="input-group-text bg-light border-end-0">
+                        <i className="bi bi-search text-muted"></i>
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control border-start-0 bg-light"
+                        placeholder="Search ID, Name, Phone..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6 col-md-3">
+                    <select
+                      className="form-select form-select-sm bg-light"
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                    >
+                      <option value="all">All Status</option>
+                      <option value="pending">Pending</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                  <div className="col-6 col-md-3">
+                    <select
+                      className="form-select form-select-sm bg-light"
+                      value={dateFilter}
+                      onChange={(e) => setDateFilter(e.target.value)}
+                    >
+                      <option value="all">All Time</option>
+                      <option value="today">Today</option>
+                      <option value="week">Last 7 Days</option>
+                      <option value="month">Last 30 Days</option>
+                    </select>
+                  </div>
+                  <div className="col-12 col-md-2 d-none d-md-block">
+                    <button
+                      className="btn btn-sm btn-dark w-100"
+                      onClick={fetchOrders}
+                    >
+                      Refresh
+                    </button>
+                  </div>
+                </div>
               </div>
               <div className="card-body p-0">
                 {/* 💻 Desktop Table View (Visible only on desktop) */}
@@ -529,7 +622,7 @@ export default function AdminDashboard() {
                             Loading orders...
                           </td>
                         </tr>
-                      ) : orders.length === 0 ? (
+                      ) : filteredOrders.length === 0 ? (
                         <tr>
                           <td
                             colSpan="6"
@@ -539,7 +632,7 @@ export default function AdminDashboard() {
                           </td>
                         </tr>
                       ) : (
-                        orders.map((order) => (
+                        filteredOrders.map((order) => (
                           <tr key={order._id}>
                             <td className="px-4 py-3 text-center">
                               <span className="fw-medium text-uppercase small">
@@ -600,13 +693,13 @@ export default function AdminDashboard() {
                       <div className="spinner-border text-primary" role="status"></div>
                       <p className="mt-2 text-muted">Loading orders...</p>
                     </div>
-                  ) : orders.length === 0 ? (
+                  ) : filteredOrders.length === 0 ? (
                     <div className="text-center py-5 text-muted">
                       No orders found.
                     </div>
                   ) : (
                     <div className="d-flex flex-column gap-3">
-                      {orders.map((order) => (
+                      {filteredOrders.map((order) => (
                         <div key={order._id} className="card border shadow-none rounded-3">
                           <div className="card-body p-3">
                             <div className="d-flex justify-content-between align-items-center mb-2">
