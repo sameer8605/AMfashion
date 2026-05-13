@@ -3,7 +3,7 @@ import SiteNavbar from "@/components/SiteNavbar";
 export default function ContactUs() {
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(
-    "Hello, I would like to contact Amravati Fashion."
+    "Hello, I would like to contact CityKart."
   )}`;
 
   return (

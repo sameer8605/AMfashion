@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
           <section className={styles.section}>
             <h2>1. Introduction</h2>
             <p>
-              Amravati Fashion ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy 
+              CityKart ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy 
               explains how we collect, use, disclose, and safeguard your information when you visit our website.
             </p>
           </section>

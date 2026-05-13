@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema({
   fabric: String,
   sellerName: {
     type: String,
-    default: "Amravati Fashion",
+    default: "CityKart",
   },
   sizes: {
     type: [String],

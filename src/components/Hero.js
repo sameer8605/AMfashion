@@ -8,7 +8,7 @@ export default function Hero() {
       className="d-flex align-items-center text-center position-relative"
       style={{
         minHeight: "65vh",
-        backgroundImage: "url('/images/bg.jpg')",
+        backgroundImage: "url('/images/hero-fashion.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -21,7 +21,7 @@ export default function Hero() {
           position: "absolute",
           inset: 0,
           background: "rgba(0, 0, 0, 0.42)", // 
-          backdropFilter: "blur(6px)",
+          backdropFilter: "blur(3px)",
           zIndex: 1,
         }}
       />

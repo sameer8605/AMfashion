@@ -3,7 +3,7 @@ import SiteNavbar from "@/components/SiteNavbar";
 export default function AboutUs() {
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(
-    "Hello, I would like to know more about Amravati Fashion."
+    "Hello, I would like to know more about CityKart."
   )}`;
 
   return (
@@ -14,7 +14,7 @@ export default function AboutUs() {
           <div className="col-12 col-md-10 col-lg-8">
             <h1 className="fw-bold mb-3">About Us</h1>
             <p className="lead text-muted">
-              Amravati Fashion brings the latest styles to the local community with a
+              CityKart brings the latest styles to the local community with a
               focus on quality, value, and friendly service. We carefully curate
               clothing and accessories so you can shop with confidence.
             </p>

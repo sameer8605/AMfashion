@@ -114,7 +114,7 @@ export default function ProductDetail({ params }) {
             <h2 className="mb-3 mt-0">{product.name}</h2>
             <div className="d-flex align-items-center mb-2">
               <span className="text-muted small me-2">Seller:</span>
-              <span className="fw-bold text-dark small">{product.sellerName || "Amravati Fashion"}</span>
+              <span className="fw-bold text-dark small">{product.sellerName || "CityKart"}</span>
             </div>
             <p className="h4 text-success bi bi-currency-rupee">{product.price}</p>
             {(product.color || product.fabric) && (

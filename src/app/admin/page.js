@@ -339,7 +339,7 @@ export default function AdminDashboard() {
 
                 <input
                   className="form-control mb-2"
-                  placeholder="Seller Name (e.g. Amravati Fashion)"
+                  placeholder="Seller Name (e.g. CityKart)"
                   value={form.sellerName}
                   onChange={(e) => setForm({ ...form, sellerName: e.target.value })}
                 />

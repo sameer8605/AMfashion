@@ -17,7 +17,7 @@ export default function ReturnRefundPolicy() {
           <section className={styles.section}>
             <h2>1. Returns Policy Overview</h2>
             <p>
-              At Amravati Fashion, we want you to be completely satisfied with your purchase. If you are not satisfied 
+              At CityKart, we want you to be completely satisfied with your purchase. If you are not satisfied 
               with your order for any reason, we offer a hassle-free return policy.
             </p>
           </section>
@@ -26,7 +26,7 @@ export default function ReturnRefundPolicy() {
             <h2>2. Return Eligibility</h2>
             <p>To be eligible for a return, your item must meet the following conditions:</p>
             <ul className={styles.list}>
-              <li>Return request must be initiated within 30 days of purchase</li>
+              <li>Return request must be initiated within 3 days of purchase</li>
               <li>Item must be in original, unused condition</li>
               <li>Item must have all original packaging, tags, and accessories</li>
               <li>Item must show no signs of wear or alteration</li>
@@ -42,7 +42,7 @@ export default function ReturnRefundPolicy() {
             <h2>3. How to Initiate a Return</h2>
             <p>To return an item, follow these steps:</p>
             <ol className={styles.list} style={{ listStyleType: "decimal" }}>
-              <li>Contact our customer service team within 30 days of purchase</li>
+              <li>Contact our customer service team within 3 days of purchase</li>
               <li>Provide your order number and reason for return</li>
               <li>Receive return authorization and shipping instructions</li>
               <li>Ship the item to the address provided (see shipping information below)</li>
@@ -54,12 +54,12 @@ export default function ReturnRefundPolicy() {
             <h2>4. Return Shipping</h2>
             <p><strong>Shipping Costs:</strong></p>
             <ul className={styles.list}>
-              <li>For defective or wrong items: Amravati Fashion covers return shipping</li>
+              <li>For defective or wrong items: CityKart covers return shipping</li>
               <li>For change of mind returns: Customer covers return shipping costs</li>
             </ul>
             <p>
               <strong>Guidelines:</strong> Please use a trackable shipping method to ensure your return reaches us. 
-              Amravati Fashion is not responsible for lost or damaged items during return shipment.
+              CityKart is not responsible for lost or damaged items during return shipment.
             </p>
           </section>
 
@@ -67,8 +67,8 @@ export default function ReturnRefundPolicy() {
             <h2>5. Refund Processing</h2>
             <p>Once we receive and inspect your returned item:</p>
             <ul className={styles.list}>
-              <li>Items will be inspected within 5-7 business days</li>
-              <li>If approved, your refund will be processed within 10-15 business days</li>
+              <li>Items will be inspected within 2 business days</li>
+              <li>If approved, your refund will be processed within 7 business days</li>
               <li>Refunds will be issued to your original payment method</li>
               <li>Please allow 5-10 business days for the refund to appear in your account</li>
             </ul>
@@ -100,7 +100,7 @@ export default function ReturnRefundPolicy() {
             <h2>8. Exchanges</h2>
             <p>
               If you would like to exchange an item for a different size or color, please contact our customer service team. 
-              We will assist you with the exchange process. Exchange shipping costs will be covered by Amravati Fashion for 
+              We will assist you with the exchange process. Exchange shipping costs will be covered by CityKart for 
               size/color exchanges, provided the original item meets return eligibility criteria.
             </p>
           </section>
@@ -133,7 +133,7 @@ export default function ReturnRefundPolicy() {
             <h2>12. Sale and Clearance Items</h2>
             <p>
               Items purchased on sale or during clearance events may have different return policies. Please refer to the 
-              specific product page or your order confirmation for details on these items' return eligibility.
+              specific product page or your order confirmation for details on these items return eligibility.
             </p>
           </section>
 
@@ -148,7 +148,7 @@ export default function ReturnRefundPolicy() {
           <section className={styles.section}>
             <h2>14. Refund Disputes</h2>
             <p>
-              If there is a dispute regarding your refund, Amravati Fashion reserves the right to conduct an investigation. 
+              If there is a dispute regarding your refund, CityKart reserves the right to conduct an investigation. 
               Our decision on refund eligibility is final. If you disagree, you may request further review by contacting 
               our management team.
             </p>
@@ -170,7 +170,7 @@ export default function ReturnRefundPolicy() {
           <section className={styles.section}>
             <h2>16. Changes to This Policy</h2>
             <p>
-              Amravati Fashion reserves the right to modify this Return & Refund Policy at any time. Changes will be 
+              CityKart reserves the right to modify this Return & Refund Policy at any time. Changes will be 
               effective immediately upon posting to the website. Your continued use of the website constitutes your 
               acceptance of any changes to this policy.
             </p>

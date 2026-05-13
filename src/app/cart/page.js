@@ -119,7 +119,7 @@ function CartContent() {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       amount: data.order.amount,
       currency: data.order.currency,
-      name: "Amravati Fashion",
+      name: "CityKart",
       description: "Complete your order with Razorpay",
       order_id: data.order.id,
       handler: async function (paymentResponse) {
@@ -160,16 +160,23 @@ function CartContent() {
     paymentObject.open();
   };
 
+  const validateAddress = () => {
+    setMessage("");
+    if (!contactPhone || !/^[0-9]{10}$/.test(contactPhone.trim())) {
+      setMessage("Please enter a valid 10-digit phone number.");
+      return false;
+    }
+    if (!address.name || !address.street || !address.city || !address.state || !address.pincode) {
+      setMessage("Please fill in all address fields.");
+      return false;
+    }
+    return true;
+  };
+
   const handlePlaceOrder = async () => {
     setMessage("");
 
-    if (!contactPhone || !/^[0-9]{10}$/.test(contactPhone.trim())) {
-      setMessage("Please enter a valid 10-digit phone number.");
-      return;
-    }
-
-    if (!address.name || !address.street || !address.city || !address.state || !address.pincode) {
-      setMessage("Please fill in all address fields.");
+    if (!validateAddress()) {
       return;
     }
 
@@ -335,6 +342,8 @@ function CartContent() {
                     </div>
                     
                     {/* Inline mobile button removed - using sticky bar */}
+                    
+                    {message && <div className="alert alert-danger mt-3 py-2 small">{message}</div>}
                   </div>
                 )}
 
@@ -406,6 +415,8 @@ function CartContent() {
                     </div>
 
                     {/* Inline mobile button removed - using sticky bar */}
+                    
+                    {message && <div className="alert alert-danger mt-3 py-2 small">{message}</div>}
                   </div>
                 )}
 
@@ -487,6 +498,7 @@ function CartContent() {
                         if (!user) {
                           router.push(`/login?redirect=/cart`);
                         } else {
+                          setMessage("");
                           setCheckoutStep("address");
                         }
                       }}
@@ -499,7 +511,11 @@ function CartContent() {
                     <button 
                       className="btn btn-dark w-100 py-3 fw-bold d-none d-lg-block" 
                       style={{ letterSpacing: '1px' }}
-                      onClick={() => setCheckoutStep("payment")}
+                      onClick={() => {
+                        if (validateAddress()) {
+                          setCheckoutStep("payment");
+                        }
+                      }}
                     >
                       PROCEED TO PAYMENT
                     </button>
@@ -549,6 +565,7 @@ function CartContent() {
                       if (!user) {
                         router.push(`/login?redirect=/cart`);
                       } else {
+                        setMessage("");
                         setCheckoutStep("address");
                       }
                     }}
@@ -559,7 +576,11 @@ function CartContent() {
                 {checkoutStep === "address" && (
                   <button 
                     className="btn btn-dark w-100 py-2 fw-bold" 
-                    onClick={() => setCheckoutStep("payment")}
+                    onClick={() => {
+                      if (validateAddress()) {
+                        setCheckoutStep("payment");
+                      }
+                    }}
                   >
                     CONTINUE
                   </button>

@@ -135,8 +135,8 @@ function NavbarContent({ fixedNav }) {
           {/* Top Row: Logo, Icons, Burger */}
           <div className="d-flex align-items-center justify-content-between w-100 mb-2 mb-lg-0">
             <Link href="/" className="navbar-brand d-flex align-items-center me-0 me-lg-4" style={{ gap: "8px" }}>
-              <Image src="/images/amravati-fashion-logo.png" alt="Logo" width={30} height={30} priority style={{ borderRadius: "6px" }} />
-              <span style={{ fontWeight: 700, fontSize: "1rem", color: "#111", letterSpacing: "0.2px" }}>AM Fashion</span>
+              <Image src="/images/citykart.png" alt="Logo" width={30} height={30} priority style={{ borderRadius: "6px" }} />
+              <span style={{ fontWeight: 700, fontSize: "1rem", color: "#111", letterSpacing: "0.2px" }}>CityKart</span>
             </Link>
 
             <div className="d-none d-lg-flex align-items-center" style={{ gap: "24px" }}>

@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="container">
         <div className={styles.footerContent}>
           <div className={styles.footerSection}>
-            <h3 className={styles.sectionTitle}>Amravati Fashion</h3>
+            <h3 className={styles.sectionTitle}>CityKart</h3>
             <p className={styles.description}>
               Discover the latest fashion trends and styles. Quality clothing for everyone.
             </p>
@@ -89,7 +89,7 @@ export default function Footer() {
 
         <div className={styles.footerBottom}>
           <p>
-            &copy; {currentYear} Amravati Fashion. All rights reserved.
+            &copy; {currentYear} CityKart. All rights reserved.
           </p>
         </div>
       </div>

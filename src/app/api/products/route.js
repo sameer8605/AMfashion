@@ -53,7 +53,7 @@ export async function POST(req) {
       category,
       color: color?.trim() || undefined,
       fabric: fabric?.trim() || undefined,
-      sellerName: sellerName?.trim() || "Amravati Fashion",
+      sellerName: sellerName?.trim() || "CityKart",
       sizes: Array.isArray(sizes) ? sizes.filter(s => s.trim()).map(s => s.trim()) : [],
       productDetails: productDetails?.trim() || undefined,
       image: imageList[0],

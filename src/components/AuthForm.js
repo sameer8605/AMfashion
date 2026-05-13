@@ -84,7 +84,7 @@ export default function AuthForm() {
         <div className="col-12 col-md-8 col-lg-5">
           <div className="card border-0 shadow-sm overflow-hidden" style={{ borderRadius: "16px" }}>
             <div className="bg-dark p-4 text-center">
-              <h4 className="text-white fw-bold mb-0">Amravati Fashion</h4>
+              <h4 className="text-white fw-bold mb-0">CityKart</h4>
               <p className="text-white-50 small mb-0 mt-1">Login or Signup in seconds</p>
             </div>
             <div className="card-body p-4">
@@ -120,7 +120,7 @@ export default function AuthForm() {
                           required
                         />
                         <label className="form-check-label text-muted" htmlFor="termsCheck">
-                          By continuing, I agree to Amravati Fashion`s{" "}
+                          By continuing, I agree to CityKart`s{" "}
                           <Link href="/terms-of-service" className="text-dark fw-semibold text-decoration-none">Terms of Use</Link>
                           {" "}and{" "}
                           <Link href="/privacy-policy" className="text-dark fw-semibold text-decoration-none">Privacy Policy</Link>
