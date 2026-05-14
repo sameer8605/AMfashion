@@ -26,7 +26,7 @@ function CartContent() {
     state: "",
     pincode: "",
   });
-  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [paymentMethod, setPaymentMethod] = useState('RAZORPAY');
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState("bag"); // bag, address, payment
@@ -79,6 +79,12 @@ function CartContent() {
       }
     })();
   }, []);
+
+  // Scroll to top when checkout step changes
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [checkoutStep]);
 
   const loadScript = (src) =>
     new Promise((resolve) => {
@@ -223,7 +229,7 @@ function CartContent() {
     <>
       <SiteNavbar fixedNav />
       <div
-        className="bg-light min-vh-100 pb-5 mb-5 mb-lg-0"
+        className="bg-light min-vh-100 pb-5 mb-5 mb-lg-0 mt-5 mt-md-0"
         style={{
           paddingTop: '62px',
           paddingBottom: '95px',
